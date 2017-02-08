@@ -1,0 +1,251 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Adrien Devresse adrien.devresse@epfl.ch" />
+  <meta name="author" content="Till Schumann till.schumann@epfl.ch" />
+  <meta name="author" content="James Gonzalo King jamesgonzalo.king@epfl.ch" />
+  <meta name="date" content="2017-01-27" />
+  <title>SYN2: synapse connectivity file format for large neuronal networks</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <link rel="stylesheet" href="github-pandoc.css" type="text/css" />
+</head>
+<body>
+<div id="header">
+<h1 class="title">SYN2: synapse connectivity file format for large neuronal networks</h1>
+<h2 class="author">Adrien Devresse <a href="mailto:adrien.devresse@epfl.ch">adrien.devresse@epfl.ch</a></h2>
+<h2 class="author">Till Schumann <a href="mailto:till.schumann@epfl.ch">till.schumann@epfl.ch</a></h2>
+<h2 class="author">James Gonzalo King <a href="mailto:jamesgonzalo.king@epfl.ch">jamesgonzalo.king@epfl.ch</a></h2>
+<h3 class="date">January 27, 2017</h3>
+</div>
+<h1 id="abstract">Abstract</h1>
+<p>SYN2 is a proposed file format specification adapted to store the neuronal connectivity (synapses) of large neuronal network. It is design to be extensible and adapted to both point to point neuronal connectivity and detailed neuronal connectivity.</p>
+<h1 id="introduction">INTRODUCTION</h1>
+<h2 id="wording">Wording</h2>
+<p>This specification follows the wording of the IETF RFCs, as defined by <a href="https://www.ietf.org/rfc/rfc2119.txt">rfc2119</a></p>
+<p>Terminology</p>
+<pre><code>* S: number of synapses
+* N: number of neuron
+* neuron_id: unique identifier (integer) of a neuron</code></pre>
+<h2 id="motivations">Motivations</h2>
+<p>It aims to unify and correct the known problems of the following file formats:</p>
+<ul>
+<li>The BBP internal synapse file format ( NRN.h5 )</li>
+<li>The Nest synapse file format</li>
+<li>The BBP TouchDetector proprietary file format</li>
+</ul>
+<h1 id="requirements">REQUIREMENTS</h1>
+<h2 id="compatibility-requirements">Compatibility requirements</h2>
+<ul>
+<li>MUST be extensible to additional synapse properties WITHOUT breaking backward reader compatibility</li>
+<li>MUST be adapted to store both point to point and detailed neuronal connectivity</li>
+<li>MUST support heterogenous population of neurons ( namespaces )</li>
+<li>MUST be able to store and retrive any kind of data and meta-data of the historical BBP file format</li>
+</ul>
+<h2 id="scale-requirements">Scale requirements</h2>
+<ul>
+<li>MUST be adapted to store TeraByte (up to Petabyte) scale neuronal synapse connectivity :
+<ul>
+<li>MUST be able to be loaded partially (out of core)</li>
+<li>MUST be resistant to corruption</li>
+</ul></li>
+<li>MUST support parallel I/O ( read and write ) operations from multiple nodes<br />
+</li>
+<li>MAY support compression if possible</li>
+</ul>
+<h2 id="performance-requirements">Performance requirements</h2>
+<ul>
+<li>MUST be able to query the following information with a maximum complexity of O(log(N_synapses))
+<ol style="list-style-type: decimal">
+<li>List of synapses associated to one neuron in pre-Synaptic view</li>
+<li>List of synapses associated to one neuron in post-Synaptic view</li>
+<li>List of synapses common to two neurons</li>
+<li>Any property associated to a given synapse identified by its synapse id</li>
+</ol></li>
+</ul>
+<p>An acceptable query time for a query of type (1) in case of a local dataset SHOULD be &lt; 1s</p>
+<p>List of the main design requirements for this file format :</p>
+<h2 id="substainability-requirements">Substainability requirements</h2>
+<ul>
+<li>MUST be a portable file format independent of any computer architecture( big endian, small endian )</li>
+<li>MUST be programming language agnostic</li>
+<li>MUST be any database engine agnostic</li>
+</ul>
+<h2 id="usability-requirements">Usability requirements</h2>
+<ul>
+<li>SHOULD be based on existing open standard</li>
+<li>SHOULD be a self-described layout</li>
+</ul>
+<h1 id="syn2-container">SYN2 CONTAINER</h1>
+<p>The SYN2 defines a hierachy of datatypes that MAY be used on top of any kind of container supporting hierachical storage. However, any implementation of SYN2 SHOULD support the <a href="https://support.hdfgroup.org/HDF5/doc/H5.format.html">Hierarchical Data Format 5 (HDF5)</a> format as container.</p>
+<p>Files in the SYN2 formats SHOULD use the .syn2 extension.</p>
+<p>Meta-data, name and string in a SYN2 file MUST be encoded using the UTF-8 encoding standard.</p>
+<h1 id="syn2-hierarchy-and-datatypes">SYN2 HIERARCHY AND DATATYPES</h1>
+<h2 id="layout">Layout</h2>
+<p>The SYNC2 containers MUST follow the following hierachy layout.</p>
+<blockquote>
+<p>/</p>
+<p>/synapses</p>
+<p>/synapses/{population_name}</p>
+<p>/synapses/{population_name}/properties</p>
+<p>/synapses/{population_name}/properties/{property_name}</p>
+<p>/synapses/{population_name}/indexes</p>
+<p>/synapses/{population_name}/indexes/{index_group_name}</p>
+<p>/synapses/{population_name}/indexes/{index_group_name}/{index_data}</p>
+</blockquote>
+<h3 id="population_name">population_name</h3>
+<p>namespace for a population of synapses. A population of synapses MUST BE independant of each other and MAY have their own properties. This allows the representation of several heterogenous collections of synapses in a single file. ( e.g point to point, detailed, … )</p>
+<h3 id="property_name">property_name</h3>
+<p>Each property of a synapse collection is representated by a separated dataset, column oriented. The list of mandatory and optional supported properties are define in the <a href="#properties">following section</a></p>
+<h3 id="index_group-name">index_group-Name</h3>
+<p>Each index group contains the associated index dataset related to the indexing of on or several associated <a href="#property_name">property_name</a> dataset</p>
+<h2 id="prop_anchor">Properties</h2>
+<h3 id="connected_neurons">connected_neurons</h3>
+<p>description: Pre-synaptic and post-synaptic neuron connections. The first column contains the neuron_id identifier of the pre-synapptic neuron and the second column of the post-synaptic neuron.</p>
+<p>This property MUST be defined.</p>
+<p>dataset_size: 2xS</p>
+<p>datatype: INT64</p>
+<h3 id="positions">positions</h3>
+<p>description: Synapse spatial position. x,y,z coordinates.</p>
+<p>This property is optional</p>
+<p>dataset size: 3xS</p>
+<p>datatype: DOUBLE</p>
+<h3 id="delay">delay</h3>
+<p>description: Synapse propagation delay. Used in point to point and detailled models.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: FLOAT</p>
+<h3 id="weight">weight</h3>
+<p>description: Synapse weight. Used in point to point model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: FLOAT</p>
+<h3 id="u0">u0</h3>
+<p>description: Synapse u0 parameter. Used in point to point model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: FLOAT</p>
+<h3 id="tau_rec">tau_rec</h3>
+<p>description: Synapse tau_rec parameter. Used in point to point model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: FLOAT</p>
+<h3 id="tau_fac">tau_fac</h3>
+<p>description: Synapse tau_fac parameter. Used in point to point model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: FLOAT</p>
+<h3 id="conductance">conductance</h3>
+<p>description: The conductance of the synapse . Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: FLOAT</p>
+<p>unit: nanosiemens</p>
+<h3 id="u_syn">u_syn</h3>
+<p>description: The u parameter in the TM model. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: FLOAT</p>
+<p>unit: model specific</p>
+<h3 id="depression_time">depression_time</h3>
+<p>description: The time constant of depression. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: INT64</p>
+<p>unit: milliseconds</p>
+<h3 id="facilitation_time">facilitation_time</h3>
+<p>description: The time constant of facilitation. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: INT64</p>
+<p>unit: milliseconds</p>
+<h3 id="decay_time">decay_time</h3>
+<p>description: The time constant of decay. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: INT64</p>
+<p>unit: milliseconds</p>
+<h3 id="absolute_efficacy">absolute_efficacy</h3>
+<p>description: The Absolute Synaptic Efficacy. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: INT64</p>
+<p>unit: millivolts</p>
+<h3 id="n_mvr">n_mvr</h3>
+<p>description: Docked vesicles. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: INT64</p>
+<p>unit: number</p>
+<h3 id="syn_type_recipe_id">syn_type_recipe_id</h3>
+<p>description: Synapse type id as used in the recipe. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: INT64</p>
+<p>unit: recipe specific id</p>
+<h3 id="morpho_segment_pre">morpho_segment_pre</h3>
+<p>description: branch id and segment id of the touched segment associated with the pre-synaptic neuron. The first column is the branch id and the second column is the segment id. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 2xS</p>
+<p>datatype: INT64</p>
+<p>unit: morphology specific id</p>
+<h3 id="morpho_segment_post">morpho_segment_post</h3>
+<p>description: branch id and segment id of the touched segment associated with the post-synaptic neuron. The first column is the branch id and the second column is the segment id. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 2xS</p>
+<p>datatype: INT64</p>
+<p>unit: morphology specific id</p>
+<h3 id="positions_center_pre">positions_center_pre</h3>
+<p>description: Pre-synaptic touch position in the center of the segment. xyz positions</p>
+<p>This property is optional</p>
+<p>dataset size: 3xS</p>
+<p>datatype: DOUBLE</p>
+<h3 id="positions_center_post">positions_center_post</h3>
+<p>description: Post-synaptic touch position in the center of the segment. xyz positions</p>
+<p>This property is optional</p>
+<p>dataset size: 3xS</p>
+<p>datatype: INT64</p>
+<h2 id="indexes">Indexes</h2>
+<h3 id="connected_neurons-index-group">connected_neurons index group</h3>
+<p>description: Index group used for Neuron to Synapse mapping in O(1)-O(log(S)) maximum time complexity.</p>
+<p>The layout of the index allows an indexation from both pre-synatic and post-synaptic neuron perspective.</p>
+<p>The SYN2 connected_neurons index allows a complete flexibility in the storage of the synapse properties and allow to optimise the storage of properties for specific queries: * pre-synaptic queries * post synaptic queries * out-of-order writing</p>
+<h3 id="connected_neuronsneuron_to_range_pre">connected_neurons/neuron_to_range_pre</h3>
+<p>description: Index for pre-synaptic neuron to synapse association. This index provide the range of <em>connected_neurons/range_to_synapse_pre</em> rows associated with each neuron</p>
+<pre><code>* row: neuron_id
+* column[0]: beginning of the range in index connected_neurons/range_to_synapse_pre
+* column[1]: non-inclusive end of the range in the index connected_neurons/range_to_synapse_pre</code></pre>
+<p>SHOULD be provided.</p>
+<p>dataset size: 2xN</p>
+<p>datatype: INT64</p>
+<p>constrains: column[0] &gt;= column[1]. A negative value in column 0 indicates that no synapse is associated to a given neuron</p>
+<h3 id="connected_neuronsrange_to_synapse_pre">connected_neurons/range_to_synapse_pre</h3>
+<p>description: Index for pre-synaptic neuron to synapse association. This index provides a range of <em>properties</em> per index row * column[0]: beginning of the range of synapses <em>properties</em> * column[1]: non-inclusive end of synapses <em>properties</em></p>
+<p>SHOULD be provided.</p>
+<p>dataset size: 2xN</p>
+<p>datatype: INT64</p>
+<p>constrains: column[0] &gt;= column[1]</p>
+<h3 id="connected_neuronsneuron_to_range_post">connected_neurons/neuron_to_range_post</h3>
+<p>description: same than <em>connected_neurons/neuron_to_range_pre</em> but for post-synaptic neurons</p>
+<h3 id="connected_neuronsrange_to_synapse_post">connected_neurons/range_to_synapse_post</h3>
+<p>description: same than <em>connected_neurons/range_to_synapse_pre</em> but for post-synaptic neurons</p>
+<h2 id="attributes">Attributes</h2>
+<p>Attributes MIGHT be defined on the different dataset for user annotations</p>
+<h1 id="scale-considerations">SCALE CONSIDERATIONS</h1>
+<p>Each dataset stored in a SYN2 HDF5 file MIGHT be compressed using the DEFLATE compression algorithm.</p>
+<p>Each dataset stored in a SYN2 HDF5 file MIGHT use the HDF5 external reference feature to split the layout into several HDF5 files. If doing so, every separated file part of the layout SHOULD have the following extension .syn2.part</p>
+<h1 id="performance-considerations">PERFORMANCE CONSIDERATIONS</h1>
+<p>Even if not mandatory, We recommend to store the synapses <em>properties</em> double-sorted by pre-synaptic neuron and post-synaptic neuron to optimise the size of the associated index.</p>
+<h1 id="extensibility">EXTENSIBILITY</h1>
+<p>Additional properties can be defined with a new {property_name} dataset.</p>
+<h1 id="see-also">SEE ALSO</h1>
+<ul>
+<li><a href="https://bbpteam.epfl.ch/project/spaces/display/BBPWFA/MVD+version+3+-+Draft+0.0.1">MVD3 File fornat</a></li>
+<li><a href="https://bbpteam.epfl.ch/project/spaces/pages/viewpage.action?pageId=10919530">NRN file format</a></li>
+<li><a href="https://bbpteam.epfl.ch/project/spaces/display/BBPHPC/Synapses+-+nrn_positions.h5">NRN position file format</a></li>
+<li><a href="https://bbpteam.epfl.ch/project/spaces/display/BBPHPC/Synapses+-+nrn_extra.h5">NRN extra</a></li>
+</ul>
+</body>
+</html>
