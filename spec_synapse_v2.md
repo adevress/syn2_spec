@@ -14,10 +14,9 @@ It is design to be extensible and adapted to both point to point neuronal connec
 
 # INTRODUCTION
 
-## Wording
+## Terminology
 This specification follows the wording of the IETF RFCs, as defined by [rfc2119](https://www.ietf.org/rfc/rfc2119.txt)
 
-Terminology
 
 	* S: number of synapses
 	* N: number of neuron
@@ -83,7 +82,7 @@ However, any implementation of SYN2 SHOULD support the [Hierarchical Data Format
 
 Files in the SYN2 formats SHOULD use the .syn2 extension.
 
-Meta-data, name and string in a SYN2 file MUST be encoded using the UTF-8 encoding standard.
+group, attributes and dataset in a SYN2 file MUST uses the UTF-8 encoding standard.
 
 # SYN2 HIERARCHY AND DATATYPES
 
@@ -128,14 +127,24 @@ Each index group contains the associated index dataset related to the indexing o
 
 ## Properties {#prop_anchor}
 
-### connected_neurons
-description: Pre-synaptic and post-synaptic neuron connections. The first column contains the neuron_id identifier of the pre-synapptic neuron
-and the second column of the post-synaptic neuron.
+### connected_neurons_pre
+description: Pre-synaptic neuron connections. each row is the neuron_id identifier of the pre-synapptic neuron.
 
 This property MUST be defined.
 
 
-dataset_size: 2xS
+dataset_size: 1xS
+
+datatype: INT64
+
+
+### connected_neurons_post
+description: Post-synaptic neuron connections. Each row is the neuron_id identifier of the post-synapptic neuron.
+
+This property MUST be defined.
+
+
+dataset_size: 1xS
 
 datatype: INT64
 
@@ -152,7 +161,7 @@ datatype: DOUBLE
 
 
 ### delay
-description: Synapse propagation delay. Used in point to point and detailled models.
+description: Synapse propagation delay. Used in point to point and detailed models.
 
 This property is optional
 
@@ -375,7 +384,7 @@ perspective.
 The SYN2 connected_neurons index allows a complete flexibility in the storage
 of the synapse properties and allow to optimise the storage of properties for specific queries:
  * pre-synaptic queries
- * post synaptic queries
+ * post-synaptic queries
  * out-of-order writing
 
 
@@ -431,9 +440,23 @@ but for post-synaptic neurons
 
 ## Attributes
 
+### Version
 
-Attributes MIGHT be defined on the different dataset for user annotations
+SYN2 files MUST define two attributes for file format versionning
 
+"/synapses#version_major"
+
+	* associated elent "/synapses"
+	* key "version_major"
+	* datatype "INT8"
+	* value "1"
+	
+"/synapses#version_minor"
+
+	* associated elent "/synapses"
+	* key "version_minor"
+	* datatype "INT8"
+	* value "0"	
 
 
 # SCALE CONSIDERATIONS
