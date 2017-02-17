@@ -226,6 +226,16 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>This property is optional</p>
 <p>dataset size: 3xS</p>
 <p>datatype: DOUBLE</p>
+<h3 id="positions_contour_pre">positions_contour_pre</h3>
+<p>description: Pre-synaptic touch position on the surface of the segment. xyz positions</p>
+<p>This property is optional</p>
+<p>dataset size: 3xS</p>
+<p>datatype: DOUBLE</p>
+<h3 id="positions_contour_post">positions_contour_post</h3>
+<p>description: Post-synaptic touch position on the surface of the segment. xyz positions</p>
+<p>This property is optional</p>
+<p>dataset size: 3xS</p>
+<p>datatype: DOUBLE</p>
 <h2 id="indexes">Indexes</h2>
 <h3 id="connected_neurons-index-group">connected_neurons index group</h3>
 <p>description: Index group used for Neuron to Synapse mapping in O(1)-O(log(S)) maximum time complexity.</p>
@@ -259,6 +269,12 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 * datatype : &quot;INT8&quot;
 * dataset size : 2x1
 * value &quot;[ 1, 0 ]&quot;</code></pre>
+<p>SYN2 files MAY define a default synapse population to use for compatibility with tool using only a single population. The default population is set through an attribute “default_population” on the synapses group itself.</p>
+<p>“/synapses#default_population”</p>
+<pre><code>* associated elent &quot;/synapses&quot;
+* key &quot;default_population&quot;
+* datatype &quot;STRING&quot;
+* value &quot;{population_name}&quot;</code></pre>
 <h1 id="scale-considerations">SCALE CONSIDERATIONS</h1>
 <p>Each dataset stored in a SYN2 HDF5 file MIGHT be compressed using the DEFLATE compression algorithm.</p>
 <p>Each dataset stored in a SYN2 HDF5 file MIGHT use the HDF5 external reference feature to split the layout into several HDF5 files. If doing so, every separated file part of the layout SHOULD have the following extension .syn2.part</p>
