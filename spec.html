@@ -15,9 +15,24 @@
 <body>
 <div id="header">
 <h1 class="title">SYN2: synapse connectivity file format for large neuronal networks</h1>
-<h2 class="author">Adrien Devresse <a href="mailto:adrien.devresse@epfl.ch">adrien.devresse@epfl.ch</a></h2>
-<h2 class="author">Till Schumann <a href="mailto:till.schumann@epfl.ch">till.schumann@epfl.ch</a></h2>
-<h2 class="author">James Gonzalo King <a href="mailto:jamesgonzalo.king@epfl.ch">jamesgonzalo.king@epfl.ch</a></h2>
+<h2 class="author">Adrien Devresse <script type="text/javascript">
+<!--
+h='&#x65;&#112;&#102;&#108;&#46;&#x63;&#104;';a='&#64;';n='&#x61;&#100;&#114;&#x69;&#x65;&#110;&#46;&#100;&#x65;&#118;&#114;&#x65;&#x73;&#x73;&#x65;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#x61;&#100;&#114;&#x69;&#x65;&#110;&#46;&#100;&#x65;&#118;&#114;&#x65;&#x73;&#x73;&#x65;&#32;&#x61;&#116;&#32;&#x65;&#112;&#102;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#104;</noscript></h2>
+<h2 class="author">Till Schumann <script type="text/javascript">
+<!--
+h='&#x65;&#112;&#102;&#108;&#46;&#x63;&#104;';a='&#64;';n='&#116;&#x69;&#108;&#108;&#46;&#x73;&#x63;&#104;&#x75;&#x6d;&#x61;&#110;&#110;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#116;&#x69;&#108;&#108;&#46;&#x73;&#x63;&#104;&#x75;&#x6d;&#x61;&#110;&#110;&#32;&#x61;&#116;&#32;&#x65;&#112;&#102;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#104;</noscript></h2>
+<h2 class="author">James Gonzalo King <script type="text/javascript">
+<!--
+h='&#x65;&#112;&#102;&#108;&#46;&#x63;&#104;';a='&#64;';n='&#106;&#x61;&#x6d;&#x65;&#x73;&#x67;&#x6f;&#110;&#122;&#x61;&#108;&#x6f;&#46;&#x6b;&#x69;&#110;&#x67;';e=n+a+h;
+document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>');
+// -->
+</script><noscript>&#106;&#x61;&#x6d;&#x65;&#x73;&#x67;&#x6f;&#110;&#122;&#x61;&#108;&#x6f;&#46;&#x6b;&#x69;&#110;&#x67;&#32;&#x61;&#116;&#32;&#x65;&#112;&#102;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#104;</noscript></h2>
 <h3 class="date">January 27, 2017</h3>
 </div>
 <h1 id="abstract">Abstract</h1>
@@ -80,7 +95,7 @@
 <h1 id="syn2-container">SYN2 CONTAINER</h1>
 <p>The SYN2 defines a hierachy of datatypes that MAY be used on top of any kind of container supporting hierachical storage. However, any implementation of SYN2 SHOULD support the <a href="https://support.hdfgroup.org/HDF5/doc/H5.format.html">Hierarchical Data Format 5 (HDF5)</a> format as container.</p>
 <p>Files in the SYN2 formats SHOULD use the .syn2 extension.</p>
-<p>Meta-data, name and string in a SYN2 file MUST be encoded using the UTF-8 encoding standard.</p>
+<p>group, attributes and dataset in a SYN2 file MUST uses the UTF-8 encoding standard.</p>
 <h1 id="syn2-hierarchy-and-datatypes">SYN2 HIERARCHY AND DATATYPES</h1>
 <h2 id="layout">Layout</h2>
 <p>The SYNC2 containers MUST follow the following hierachy layout.</p>
@@ -117,7 +132,7 @@
 <p>dataset size: 3xS</p>
 <p>datatype: DOUBLE</p>
 <h3 id="delay">delay</h3>
-<p>description: Synapse propagation delay. Used in point to point and detailled models.</p>
+<p>description: Synapse propagation delay. Used in point to point and detailed models.</p>
 <p>This property is optional</p>
 <p>dataset size: 1xS</p>
 <p>datatype: FLOAT</p>
@@ -210,12 +225,12 @@
 <p>description: Post-synaptic touch position in the center of the segment. xyz positions</p>
 <p>This property is optional</p>
 <p>dataset size: 3xS</p>
-<p>datatype: INT64</p>
+<p>datatype: DOUBLE</p>
 <h2 id="indexes">Indexes</h2>
 <h3 id="connected_neurons-index-group">connected_neurons index group</h3>
 <p>description: Index group used for Neuron to Synapse mapping in O(1)-O(log(S)) maximum time complexity.</p>
 <p>The layout of the index allows an indexation from both pre-synatic and post-synaptic neuron perspective.</p>
-<p>The SYN2 connected_neurons index allows a complete flexibility in the storage of the synapse properties and allow to optimise the storage of properties for specific queries: * pre-synaptic queries * post synaptic queries * out-of-order writing</p>
+<p>The SYN2 connected_neurons index allows a complete flexibility in the storage of the synapse properties and allow to optimise the storage of properties for specific queries: * pre-synaptic queries * post-synaptic queries * out-of-order writing</p>
 <h3 id="connected_neuronsneuron_to_range_pre">connected_neurons/neuron_to_range_pre</h3>
 <p>description: Index for pre-synaptic neuron to synapse association. This index provide the range of <em>connected_neurons/range_to_synapse_pre</em> rows associated with each neuron</p>
 <pre><code>* row: neuron_id
@@ -224,13 +239,13 @@
 <p>SHOULD be provided.</p>
 <p>dataset size: 2xN</p>
 <p>datatype: INT64</p>
-<p>constrains: column[0] &gt;= column[1]. A negative value in column 0 indicates that no synapse is associated to a given neuron</p>
+<p>constrains: column[0] &lt; column[1]. A negative value in column 0 indicates that no synapse is associated to a given neuron</p>
 <h3 id="connected_neuronsrange_to_synapse_pre">connected_neurons/range_to_synapse_pre</h3>
 <p>description: Index for pre-synaptic neuron to synapse association. This index provides a range of <em>properties</em> per index row * column[0]: beginning of the range of synapses <em>properties</em> * column[1]: non-inclusive end of synapses <em>properties</em></p>
 <p>SHOULD be provided.</p>
 <p>dataset size: 2xN</p>
 <p>datatype: INT64</p>
-<p>constrains: column[0] &gt;= column[1]</p>
+<p>constrains: column[0] &lt; column[1]</p>
 <h3 id="connected_neuronsneuron_to_range_post">connected_neurons/neuron_to_range_post</h3>
 <p>description: same than <em>connected_neurons/neuron_to_range_pre</em> but for post-synaptic neurons</p>
 <h3 id="connected_neuronsrange_to_synapse_post">connected_neurons/range_to_synapse_post</h3>

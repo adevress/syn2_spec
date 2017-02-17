@@ -18,9 +18,9 @@ It is design to be extensible and adapted to both point to point neuronal connec
 This specification follows the wording of the IETF RFCs, as defined by [rfc2119](https://www.ietf.org/rfc/rfc2119.txt)
 
 
-	* S: number of synapses
-	* N: number of neuron
-	* neuron_id: unique identifier (integer) of a neuron
+    * S: number of synapses
+    * N: number of neuron
+    * neuron_id: unique identifier (integer) of a neuron
 
 ## Motivations
 
@@ -369,7 +369,7 @@ This property is optional
 
 dataset size: 3xS
 
-datatype: INT64
+datatype: DOUBLE
 
 
 ## Indexes
@@ -396,10 +396,10 @@ description: Index for pre-synaptic neuron to synapse association.
 This index provide the range of *connected_neurons/range_to_synapse_pre* rows 
 associated with each neuron
 
-	* row: neuron_id
-	* column[0]: beginning of the range in index connected_neurons/range_to_synapse_pre
-	* column[1]: non-inclusive end of the range in the index connected_neurons/range_to_synapse_pre
-	
+    * row: neuron_id
+    * column[0]: beginning of the range in index connected_neurons/range_to_synapse_pre
+    * column[1]: non-inclusive end of the range in the index connected_neurons/range_to_synapse_pre
+    
 
 SHOULD be provided.
 
@@ -408,15 +408,15 @@ dataset size: 2xN
 
 datatype: INT64
 
-constrains: column[0] >= column[1]. A negative value in column 0 indicates that no synapse is associated to a given neuron
+constrains: column[0] < column[1]. A negative value in column 0 indicates that no synapse is associated to a given neuron
 
 
 ### connected_neurons/range_to_synapse_pre
 description: Index for pre-synaptic neuron to synapse association. 
 This index provides a range of *properties* per index row
-	* column[0]: beginning of the range of synapses *properties*
-	* column[1]: non-inclusive end of synapses *properties*
-	
+    * column[0]: beginning of the range of synapses *properties*
+    * column[1]: non-inclusive end of synapses *properties*
+    
 
 SHOULD be provided.
 
@@ -425,7 +425,7 @@ dataset size: 2xN
 
 datatype: INT64
 
-constrains: column[0] >= column[1]
+constrains: column[0] < column[1]
 
 
 ### connected_neurons/neuron_to_range_post
@@ -446,17 +446,17 @@ SYN2 files MUST define two attributes for file format versionning
 
 "/synapses#version_major"
 
-	* associated elent "/synapses"
-	* key "version_major"
-	* datatype "INT8"
-	* value "1"
-	
+    * associated elent "/synapses"
+    * key "version_major"
+    * datatype "INT8"
+    * value "1"
+    
 "/synapses#version_minor"
 
-	* associated elent "/synapses"
-	* key "version_minor"
-	* datatype "INT8"
-	* value "0"	
+    * associated elent "/synapses"
+    * key "version_minor"
+    * datatype "INT8"
+    * value "0" 
 
 
 # SCALE CONSIDERATIONS
