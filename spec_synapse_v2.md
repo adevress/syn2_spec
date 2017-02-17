@@ -128,7 +128,7 @@ Each index group contains the associated index dataset related to the indexing o
 ## Properties {#prop_anchor}
 
 ### connected_neurons_pre
-description: Pre-synaptic neuron connections. each row is the neuron_id identifier of the pre-synapptic neuron.
+description: Pre-synaptic neuron connections. each row is the neuron_id identifier of the pre-synaptic neuron.
 
 This property MUST be defined.
 
@@ -139,7 +139,7 @@ datatype: INT64
 
 
 ### connected_neurons_post
-description: Post-synaptic neuron connections. Each row is the neuron_id identifier of the post-synapptic neuron.
+description: Post-synaptic neuron connections. Each row is the neuron_id identifier of the post-synaptic neuron.
 
 This property MUST be defined.
 
