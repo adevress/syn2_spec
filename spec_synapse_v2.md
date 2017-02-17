@@ -372,6 +372,28 @@ dataset size: 3xS
 datatype: DOUBLE
 
 
+### positions_contour_pre
+description: Pre-synaptic touch position on the surface of the segment. xyz positions
+
+This property is optional
+
+
+dataset size: 3xS
+
+datatype: DOUBLE
+
+
+### positions_contour_post
+description: Post-synaptic touch position on the surface of the segment. xyz positions
+
+This property is optional
+
+
+dataset size: 3xS
+
+datatype: DOUBLE
+
+
 ## Indexes
 
 ### connected_neurons index group
@@ -452,6 +474,20 @@ SYN2 files MUST define two attributes for file format versionning
     * dataset size : 2x1
     * value "[ 1, 0 ]"
 
+
+
+SYN2 files MAY define a default synapse population to use for compatibility with tool 
+using only a single population.
+The default population is set through an attribute "default_population" on the synapses group itself.
+
+"/synapses#default_population"
+
+    * associated elent "/synapses"
+    * key "default_population"
+    * datatype "STRING"
+    * value "{population_name}"
+    
+    
 
 # SCALE CONSIDERATIONS
 
