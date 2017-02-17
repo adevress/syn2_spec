@@ -444,19 +444,13 @@ but for post-synaptic neurons
 
 SYN2 files MUST define two attributes for file format versionning
 
-"/synapses#version_major"
+"/synapses#version"
 
-    * associated elent "/synapses"
-    * key "version_major"
-    * datatype "INT8"
-    * value "1"
-    
-"/synapses#version_minor"
-
-    * associated elent "/synapses"
-    * key "version_minor"
-    * datatype "INT8"
-    * value "0" 
+    * associated elent : "/synapses"
+    * key : "version_major"
+    * datatype : "INT8"
+    * dataset size : 2x1
+    * value "[ 1, 0 ]"
 
 
 # SCALE CONSIDERATIONS

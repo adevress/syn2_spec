@@ -253,16 +253,12 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <h2 id="attributes">Attributes</h2>
 <h3 id="version">Version</h3>
 <p>SYN2 files MUST define two attributes for file format versionning</p>
-<p>“/synapses#version_major”</p>
-<pre><code>* associated elent &quot;/synapses&quot;
-* key &quot;version_major&quot;
-* datatype &quot;INT8&quot;
-* value &quot;1&quot;</code></pre>
-<p>“/synapses#version_minor”</p>
-<pre><code>* associated elent &quot;/synapses&quot;
-* key &quot;version_minor&quot;
-* datatype &quot;INT8&quot;
-* value &quot;0&quot; </code></pre>
+<p>“/synapses#version”</p>
+<pre><code>* associated elent : &quot;/synapses&quot;
+* key : &quot;version_major&quot;
+* datatype : &quot;INT8&quot;
+* dataset size : 2x1
+* value &quot;[ 1, 0 ]&quot;</code></pre>
 <h1 id="scale-considerations">SCALE CONSIDERATIONS</h1>
 <p>Each dataset stored in a SYN2 HDF5 file MIGHT be compressed using the DEFLATE compression algorithm.</p>
 <p>Each dataset stored in a SYN2 HDF5 file MIGHT use the HDF5 external reference feature to split the layout into several HDF5 files. If doing so, every separated file part of the layout SHOULD have the following extension .syn2.part</p>
