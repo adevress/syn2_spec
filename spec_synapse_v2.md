@@ -149,7 +149,7 @@ dataset_size: 1xS
 datatype: INT64
 
 
-### positions
+### position
 description: Synapse spatial position. x,y,z coordinates.
 
 This property is optional
