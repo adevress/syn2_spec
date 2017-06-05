@@ -1,14 +1,20 @@
 % SYN2: synapse connectivity file format for large neuronal networks
-% Adrien Devresse <adrien.devresse@epfl.ch>; Till Schumann <till.schumann@epfl.ch>; James Gonzalo King <jamesgonzalo.king@epfl.ch>
-% January 27, 2017
-
-
-
 
 # Abstract
 
 SYN2 is a proposed file format specification adapted to store the neuronal connectivity (synapses) of large neuronal network. 
 It is design to be extensible and adapted to both point to point neuronal connectivity and detailed neuronal connectivity.
+
+
+**Authors:**  
+Adrien Devresse <adrien.devresse@epfl.ch>  
+Till Schumann <till.schumann@epfl.ch>  
+James Gonzalo King <jamesgonzalo.king@epfl.ch>  
+
+
+**Date:** January 27, 2017
+
+**Status:** Draft
 
 
 
@@ -88,7 +94,7 @@ group, attributes and dataset in a SYN2 file MUST uses the UTF-8 encoding standa
 
 ## Layout
 
-The SYNC2 containers MUST follow the following hierachy layout.
+The SYN2 containers MUST follow the following hierachy layout.
 
 > /
 >
@@ -184,28 +190,6 @@ datatype: FLOAT
 
 ### u0
 description: Synapse u0 parameter. Used in point to point model.
-
-This property is optional
-
-
-dataset size: 1xS
-
-datatype: FLOAT
-
-
-### tau_rec
-description: Synapse tau_rec parameter. Used in point to point model.
-
-This property is optional
-
-
-dataset size: 1xS
-
-datatype: FLOAT
-
-
-### tau_fac
-description: Synapse tau_fac parameter. Used in point to point model.
 
 This property is optional
 
@@ -350,7 +334,7 @@ datatype: INT64
 unit: morphology specific id
 
 
-### positions_center_pre
+### position_center_pre
 description: Pre-synaptic touch position in the center of the segment. xyz positions
 
 This property is optional
@@ -361,7 +345,7 @@ dataset size: 3xS
 datatype: DOUBLE
 
 
-### positions_center_post
+### position_center_post
 description: Post-synaptic touch position in the center of the segment. xyz positions
 
 This property is optional
@@ -372,7 +356,7 @@ dataset size: 3xS
 datatype: DOUBLE
 
 
-### positions_contour_pre
+### position_contour_pre
 description: Pre-synaptic touch position on the surface of the segment. xyz positions
 
 This property is optional
@@ -383,7 +367,7 @@ dataset size: 3xS
 datatype: DOUBLE
 
 
-### positions_contour_post
+### position_contour_post
 description: Post-synaptic touch position on the surface of the segment. xyz positions
 
 This property is optional

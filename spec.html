@@ -4,10 +4,6 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
-  <meta name="author" content="Adrien Devresse adrien.devresse@epfl.ch" />
-  <meta name="author" content="Till Schumann till.schumann@epfl.ch" />
-  <meta name="author" content="James Gonzalo King jamesgonzalo.king@epfl.ch" />
-  <meta name="date" content="2017-01-27" />
   <title>SYN2: synapse connectivity file format for large neuronal networks</title>
   <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="github-pandoc.css" type="text/css" />
@@ -15,28 +11,30 @@
 <body>
 <div id="header">
 <h1 class="title">SYN2: synapse connectivity file format for large neuronal networks</h1>
-<h2 class="author">Adrien Devresse <script type="text/javascript">
+</div>
+<h1 id="abstract">Abstract</h1>
+<p>SYN2 is a proposed file format specification adapted to store the neuronal connectivity (synapses) of large neuronal network. It is design to be extensible and adapted to both point to point neuronal connectivity and detailed neuronal connectivity.</p>
+<p><strong>Authors:</strong><br />
+Adrien Devresse <script type="text/javascript">
 <!--
 h='&#x65;&#112;&#102;&#108;&#46;&#x63;&#104;';a='&#64;';n='&#x61;&#100;&#114;&#x69;&#x65;&#110;&#46;&#100;&#x65;&#118;&#114;&#x65;&#x73;&#x73;&#x65;';e=n+a+h;
 document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>');
 // -->
-</script><noscript>&#x61;&#100;&#114;&#x69;&#x65;&#110;&#46;&#100;&#x65;&#118;&#114;&#x65;&#x73;&#x73;&#x65;&#32;&#x61;&#116;&#32;&#x65;&#112;&#102;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#104;</noscript></h2>
-<h2 class="author">Till Schumann <script type="text/javascript">
+</script><noscript>&#x61;&#100;&#114;&#x69;&#x65;&#110;&#46;&#100;&#x65;&#118;&#114;&#x65;&#x73;&#x73;&#x65;&#32;&#x61;&#116;&#32;&#x65;&#112;&#102;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#104;</noscript><br />
+Till Schumann <script type="text/javascript">
 <!--
 h='&#x65;&#112;&#102;&#108;&#46;&#x63;&#104;';a='&#64;';n='&#116;&#x69;&#108;&#108;&#46;&#x73;&#x63;&#104;&#x75;&#x6d;&#x61;&#110;&#110;';e=n+a+h;
 document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>');
 // -->
-</script><noscript>&#116;&#x69;&#108;&#108;&#46;&#x73;&#x63;&#104;&#x75;&#x6d;&#x61;&#110;&#110;&#32;&#x61;&#116;&#32;&#x65;&#112;&#102;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#104;</noscript></h2>
-<h2 class="author">James Gonzalo King <script type="text/javascript">
+</script><noscript>&#116;&#x69;&#108;&#108;&#46;&#x73;&#x63;&#104;&#x75;&#x6d;&#x61;&#110;&#110;&#32;&#x61;&#116;&#32;&#x65;&#112;&#102;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#104;</noscript><br />
+James Gonzalo King <script type="text/javascript">
 <!--
 h='&#x65;&#112;&#102;&#108;&#46;&#x63;&#104;';a='&#64;';n='&#106;&#x61;&#x6d;&#x65;&#x73;&#x67;&#x6f;&#110;&#122;&#x61;&#108;&#x6f;&#46;&#x6b;&#x69;&#110;&#x67;';e=n+a+h;
 document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\/'+'a'+'>');
 // -->
-</script><noscript>&#106;&#x61;&#x6d;&#x65;&#x73;&#x67;&#x6f;&#110;&#122;&#x61;&#108;&#x6f;&#46;&#x6b;&#x69;&#110;&#x67;&#32;&#x61;&#116;&#32;&#x65;&#112;&#102;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#104;</noscript></h2>
-<h3 class="date">January 27, 2017</h3>
-</div>
-<h1 id="abstract">Abstract</h1>
-<p>SYN2 is a proposed file format specification adapted to store the neuronal connectivity (synapses) of large neuronal network. It is design to be extensible and adapted to both point to point neuronal connectivity and detailed neuronal connectivity.</p>
+</script><noscript>&#106;&#x61;&#x6d;&#x65;&#x73;&#x67;&#x6f;&#110;&#122;&#x61;&#108;&#x6f;&#46;&#x6b;&#x69;&#110;&#x67;&#32;&#x61;&#116;&#32;&#x65;&#112;&#102;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#104;</noscript></p>
+<p><strong>Date:</strong> January 27, 2017</p>
+<p><strong>Status:</strong> Draft</p>
 <h1 id="introduction">INTRODUCTION</h1>
 <h2 id="terminology">Terminology</h2>
 <p>This specification follows the wording of the IETF RFCs, as defined by <a href="https://www.ietf.org/rfc/rfc2119.txt">rfc2119</a></p>
@@ -98,7 +96,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>group, attributes and dataset in a SYN2 file MUST uses the UTF-8 encoding standard.</p>
 <h1 id="syn2-hierarchy-and-datatypes">SYN2 HIERARCHY AND DATATYPES</h1>
 <h2 id="layout">Layout</h2>
-<p>The SYNC2 containers MUST follow the following hierachy layout.</p>
+<p>The SYN2 containers MUST follow the following hierachy layout.</p>
 <blockquote>
 <p>/</p>
 <p>/synapses</p>
@@ -143,16 +141,6 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>datatype: FLOAT</p>
 <h3 id="u0">u0</h3>
 <p>description: Synapse u0 parameter. Used in point to point model.</p>
-<p>This property is optional</p>
-<p>dataset size: 1xS</p>
-<p>datatype: FLOAT</p>
-<h3 id="tau_rec">tau_rec</h3>
-<p>description: Synapse tau_rec parameter. Used in point to point model.</p>
-<p>This property is optional</p>
-<p>dataset size: 1xS</p>
-<p>datatype: FLOAT</p>
-<h3 id="tau_fac">tau_fac</h3>
-<p>description: Synapse tau_fac parameter. Used in point to point model.</p>
 <p>This property is optional</p>
 <p>dataset size: 1xS</p>
 <p>datatype: FLOAT</p>
@@ -216,22 +204,22 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>dataset size: 2xS</p>
 <p>datatype: INT64</p>
 <p>unit: morphology specific id</p>
-<h3 id="positions_center_pre">positions_center_pre</h3>
+<h3 id="position_center_pre">position_center_pre</h3>
 <p>description: Pre-synaptic touch position in the center of the segment. xyz positions</p>
 <p>This property is optional</p>
 <p>dataset size: 3xS</p>
 <p>datatype: DOUBLE</p>
-<h3 id="positions_center_post">positions_center_post</h3>
+<h3 id="position_center_post">position_center_post</h3>
 <p>description: Post-synaptic touch position in the center of the segment. xyz positions</p>
 <p>This property is optional</p>
 <p>dataset size: 3xS</p>
 <p>datatype: DOUBLE</p>
-<h3 id="positions_contour_pre">positions_contour_pre</h3>
+<h3 id="position_contour_pre">position_contour_pre</h3>
 <p>description: Pre-synaptic touch position on the surface of the segment. xyz positions</p>
 <p>This property is optional</p>
 <p>dataset size: 3xS</p>
 <p>datatype: DOUBLE</p>
-<h3 id="positions_contour_post">positions_contour_post</h3>
+<h3 id="position_contour_post">position_contour_post</h3>
 <p>description: Post-synaptic touch position on the surface of the segment. xyz positions</p>
 <p>This property is optional</p>
 <p>dataset size: 3xS</p>
