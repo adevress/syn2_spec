@@ -420,6 +420,7 @@ constrains: column[0] < column[1]. A negative value in column 0 indicates that n
 ### connected_neurons/range_to_synapse_pre
 description: Index for pre-synaptic neuron to synapse association. 
 This index provides a range of *properties* per index row
+
     * column[0]: beginning of the range of synapses *properties*
     * column[1]: non-inclusive end of synapses *properties*
     
