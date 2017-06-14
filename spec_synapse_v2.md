@@ -289,8 +289,9 @@ datatype: INT64
 
 unit: number
 
-### syn_type_recipe_id
-description: Synapse type id as used in the recipe. Used in detailed model.
+### syn_type_id
+description: Synapse type id as used in the recipe. Used in detailed model. 
+The id can be any arbitrary INT64 value refering to an external model id 
 
 This property is optional
 
