@@ -303,36 +303,66 @@ datatype: INT64
 unit: recipe specific id
 
 
-### morpho_segment_pre
-description: branch id and segment id of the touched segment associated with the pre-synaptic neuron.
-The first column is the branch id and the second column is the segment id.
+### morpho_section_id_pre
+description: section id of the touched segment associated with the pre-synaptic neuron.
+The ID comes is associated with the morphology model.
 Used in detailed model.
 
 
 This property is optional
 
 
-dataset size: 2xS
+dataset size: 1xS
 
 datatype: INT64
 
 unit: morphology specific id
 
 
-### morpho_segment_post
-description: branch id and segment id of the touched segment associated with the post-synaptic neuron.
-The first column is the branch id and the second column is the segment id.
+### morpho_section_distance_pre
+description: distance from the betweenthe beginning of the associated section on the pre-synaptic neuron
+and the touch. Distance in micro-meter.
+
+
+This property is optional
+
+
+dataset size: 1xS
+
+datatype: FLOAT
+
+unit: micro-meters
+
+
+### morpho_section_id_post
+description: section id of the touched segment associated with the post-synaptic neuron.
+The ID comes is associated with the morphology model.
 Used in detailed model.
 
 
 This property is optional
 
 
-dataset size: 2xS
+dataset size: 1xS
 
 datatype: INT64
 
 unit: morphology specific id
+
+
+### morpho_section_distance_post
+description: distance from the betweenthe beginning of the associated section on the post-synaptic neuron
+and the touch. Distance in micro-meter.
+
+
+This property is optional
+
+
+dataset size: 1xS
+
+datatype: FLOAT
+
+unit: micro-meters
 
 
 ### position_center_pre

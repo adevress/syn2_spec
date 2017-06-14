@@ -192,18 +192,30 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>dataset size: 1xS</p>
 <p>datatype: INT64</p>
 <p>unit: recipe specific id</p>
-<h3 id="morpho_segment_pre">morpho_segment_pre</h3>
-<p>description: branch id and segment id of the touched segment associated with the pre-synaptic neuron. The first column is the branch id and the second column is the segment id. Used in detailed model.</p>
+<h3 id="morpho_section_id_pre">morpho_section_id_pre</h3>
+<p>description: section id of the touched segment associated with the pre-synaptic neuron. The ID comes is associated with the morphology model. Used in detailed model.</p>
 <p>This property is optional</p>
-<p>dataset size: 2xS</p>
+<p>dataset size: 1xS</p>
 <p>datatype: INT64</p>
 <p>unit: morphology specific id</p>
-<h3 id="morpho_segment_post">morpho_segment_post</h3>
-<p>description: branch id and segment id of the touched segment associated with the post-synaptic neuron. The first column is the branch id and the second column is the segment id. Used in detailed model.</p>
+<h3 id="morpho_section_distance_pre">morpho_section_distance_pre</h3>
+<p>description: distance from the betweenthe beginning of the associated section on the pre-synaptic neuron and the touch. Distance in micro-meter.</p>
 <p>This property is optional</p>
-<p>dataset size: 2xS</p>
+<p>dataset size: 1xS</p>
+<p>datatype: FLOAT</p>
+<p>unit: micro-meters</p>
+<h3 id="morpho_section_id_post">morpho_section_id_post</h3>
+<p>description: section id of the touched segment associated with the post-synaptic neuron. The ID comes is associated with the morphology model. Used in detailed model.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
 <p>datatype: INT64</p>
 <p>unit: morphology specific id</p>
+<h3 id="morpho_section_distance_post">morpho_section_distance_post</h3>
+<p>description: distance from the betweenthe beginning of the associated section on the post-synaptic neuron and the touch. Distance in micro-meter.</p>
+<p>This property is optional</p>
+<p>dataset size: 1xS</p>
+<p>datatype: FLOAT</p>
+<p>unit: micro-meters</p>
 <h3 id="position_center_pre">position_center_pre</h3>
 <p>description: Pre-synaptic touch position in the center of the segment. xyz positions</p>
 <p>This property is optional</p>
