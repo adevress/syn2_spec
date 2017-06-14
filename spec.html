@@ -124,7 +124,7 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>This property MUST be defined.</p>
 <p>dataset_size: 1xS</p>
 <p>datatype: INT64</p>
-<h3 id="positions">positions</h3>
+<h3 id="position">position</h3>
 <p>description: Synapse spatial position. x,y,z coordinates.</p>
 <p>This property is optional</p>
 <p>dataset size: 3xS</p>
@@ -186,8 +186,8 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>dataset size: 1xS</p>
 <p>datatype: INT64</p>
 <p>unit: number</p>
-<h3 id="syn_type_recipe_id">syn_type_recipe_id</h3>
-<p>description: Synapse type id as used in the recipe. Used in detailed model.</p>
+<h3 id="syn_type_id">syn_type_id</h3>
+<p>description: Synapse type id as used in the recipe. Used in detailed model. The id can be any arbitrary INT64 value refering to an external model id</p>
 <p>This property is optional</p>
 <p>dataset size: 1xS</p>
 <p>datatype: INT64</p>
@@ -239,7 +239,9 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>datatype: INT64</p>
 <p>constrains: column[0] &lt; column[1]. A negative value in column 0 indicates that no synapse is associated to a given neuron</p>
 <h3 id="connected_neuronsrange_to_synapse_pre">connected_neurons/range_to_synapse_pre</h3>
-<p>description: Index for pre-synaptic neuron to synapse association. This index provides a range of <em>properties</em> per index row * column[0]: beginning of the range of synapses <em>properties</em> * column[1]: non-inclusive end of synapses <em>properties</em></p>
+<p>description: Index for pre-synaptic neuron to synapse association. This index provides a range of <em>properties</em> per index row</p>
+<pre><code>* column[0]: beginning of the range of synapses *properties*
+* column[1]: non-inclusive end of synapses *properties*</code></pre>
 <p>SHOULD be provided.</p>
 <p>dataset size: 2xN</p>
 <p>datatype: INT64</p>
