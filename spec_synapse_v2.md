@@ -121,7 +121,11 @@ The SYN2 containers MUST follow the following hierachy layout.
 namespace for a population of synapses. A population of synapses MUST BE independant
 of each other and MAY have their own properties. This allows the
 representation of several heterogenous collections of synapses in a single file.
-( e.g point to point, detailed, ... )
+( e.g point to point, detailed, ... ). 
+
+In case of a single unamed population, the name "default" SHOULD be used.
+
+
 
 ### property_name
 Each property of a synapse collection is representated by a separated dataset, column oriented.
@@ -411,11 +415,11 @@ datatype: DOUBLE
 
 ## Indexes
 
-### connected_neurons index group
-description: Index group used for Neuron to Synapse mapping
+### connected_neurons_{pre,post} indexes 
+description: Index groups used for Neuron to Synapse mapping
 in O(1)-O(log(S)) maximum time complexity.
 
-The layout of the index allows an indexation from both pre-synatic and post-synaptic neuron
+The layout of the index allows an indexation from pre-synatic and post-synaptic neuron
 perspective.
 
 The SYN2 connected_neurons index allows a complete flexibility in the storage
@@ -428,14 +432,14 @@ of the synapse properties and allow to optimise the storage of properties for sp
 
 
 
-### connected_neurons/neuron_to_range_pre
+### connected_neurons_pre/neuron_id_to_range
 description: Index for pre-synaptic neuron to synapse association. 
-This index provide the range of *connected_neurons/range_to_synapse_pre* rows 
+This index provide the range of *connected_neurons_pre/range_to_synapse_id* rows 
 associated with each neuron
 
     * row: neuron_id
-    * column[0]: beginning of the range in index connected_neurons/range_to_synapse_pre
-    * column[1]: non-inclusive end of the range in the index connected_neurons/range_to_synapse_pre
+    * column[0]: beginning of the range in index connected_neurons_pre/range_to_synapse_id
+    * column[1]: non-inclusive end of the range in the index connected_neurons_pre/range_to_synapse_id
     
 
 SHOULD be provided.
@@ -448,7 +452,7 @@ datatype: INT64
 constrains: column[0] < column[1]. A negative value in column 0 indicates that no synapse is associated to a given neuron
 
 
-### connected_neurons/range_to_synapse_pre
+### connected_neurons_pre/range_to_synapse_id
 description: Index for pre-synaptic neuron to synapse association. 
 This index provides a range of *properties* per index row
 
@@ -459,19 +463,19 @@ This index provides a range of *properties* per index row
 SHOULD be provided.
 
 
-dataset size: 2xN
+dataset size: 2x O(S)
 
 datatype: INT64
 
 constrains: column[0] < column[1]
 
 
-### connected_neurons/neuron_to_range_post
+### connected_neurons_post/neuron_id_to_range
 description: same than *connected_neurons/neuron_to_range_pre*
 but for post-synaptic neurons
 
 
-### connected_neurons/range_to_synapse_post
+### connected_neurons_post/range_to_synapse_id
 description: same than *connected_neurons/range_to_synapse_pre*
 but for post-synaptic neurons
 
@@ -490,19 +494,7 @@ SYN2 files MUST define two attributes for file format versionning
     * dataset size : 2x1
     * value "[ 1, 0 ]"
 
-
-
-SYN2 files MAY define a default synapse population to use for compatibility with tool 
-using only a single population.
-The default population is set through an attribute "default_population" on the synapses group itself.
-
-"/synapses#default_population"
-
-    * associated elent "/synapses"
-    * key "default_population"
-    * datatype "STRING"
-    * value "{population_name}"
-    
+   
     
 
 # SCALE CONSIDERATIONS

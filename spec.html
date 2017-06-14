@@ -108,7 +108,8 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>/synapses/{population_name}/indexes/{index_group_name}/{index_data}</p>
 </blockquote>
 <h3 id="population_name">population_name</h3>
-<p>namespace for a population of synapses. A population of synapses MUST BE independant of each other and MAY have their own properties. This allows the representation of several heterogenous collections of synapses in a single file. ( e.g point to point, detailed, … )</p>
+<p>namespace for a population of synapses. A population of synapses MUST BE independant of each other and MAY have their own properties. This allows the representation of several heterogenous collections of synapses in a single file. ( e.g point to point, detailed, … ).</p>
+<p>In case of a single unamed population, the name “default” SHOULD be used.</p>
 <h3 id="property_name">property_name</h3>
 <p>Each property of a synapse collection is representated by a separated dataset, column oriented. The list of mandatory and optional supported properties are define in the <a href="#properties">following section</a></p>
 <h3 id="index_group-name">index_group-Name</h3>
@@ -237,30 +238,30 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 <p>dataset size: 3xS</p>
 <p>datatype: DOUBLE</p>
 <h2 id="indexes">Indexes</h2>
-<h3 id="connected_neurons-index-group">connected_neurons index group</h3>
-<p>description: Index group used for Neuron to Synapse mapping in O(1)-O(log(S)) maximum time complexity.</p>
-<p>The layout of the index allows an indexation from both pre-synatic and post-synaptic neuron perspective.</p>
+<h3 id="connected_neurons_prepost-indexes">connected_neurons_{pre,post} indexes</h3>
+<p>description: Index groups used for Neuron to Synapse mapping in O(1)-O(log(S)) maximum time complexity.</p>
+<p>The layout of the index allows an indexation from pre-synatic and post-synaptic neuron perspective.</p>
 <p>The SYN2 connected_neurons index allows a complete flexibility in the storage of the synapse properties and allow to optimise the storage of properties for specific queries: * pre-synaptic queries * post-synaptic queries * out-of-order writing</p>
-<h3 id="connected_neuronsneuron_to_range_pre">connected_neurons/neuron_to_range_pre</h3>
-<p>description: Index for pre-synaptic neuron to synapse association. This index provide the range of <em>connected_neurons/range_to_synapse_pre</em> rows associated with each neuron</p>
+<h3 id="connected_neurons_preneuron_id_to_range">connected_neurons_pre/neuron_id_to_range</h3>
+<p>description: Index for pre-synaptic neuron to synapse association. This index provide the range of <em>connected_neurons_pre/range_to_synapse_id</em> rows associated with each neuron</p>
 <pre><code>* row: neuron_id
-* column[0]: beginning of the range in index connected_neurons/range_to_synapse_pre
-* column[1]: non-inclusive end of the range in the index connected_neurons/range_to_synapse_pre</code></pre>
+* column[0]: beginning of the range in index connected_neurons_pre/range_to_synapse_id
+* column[1]: non-inclusive end of the range in the index connected_neurons_pre/range_to_synapse_id</code></pre>
 <p>SHOULD be provided.</p>
 <p>dataset size: 2xN</p>
 <p>datatype: INT64</p>
 <p>constrains: column[0] &lt; column[1]. A negative value in column 0 indicates that no synapse is associated to a given neuron</p>
-<h3 id="connected_neuronsrange_to_synapse_pre">connected_neurons/range_to_synapse_pre</h3>
+<h3 id="connected_neurons_prerange_to_synapse_id">connected_neurons_pre/range_to_synapse_id</h3>
 <p>description: Index for pre-synaptic neuron to synapse association. This index provides a range of <em>properties</em> per index row</p>
 <pre><code>* column[0]: beginning of the range of synapses *properties*
 * column[1]: non-inclusive end of synapses *properties*</code></pre>
 <p>SHOULD be provided.</p>
-<p>dataset size: 2xN</p>
+<p>dataset size: 2x O(S)</p>
 <p>datatype: INT64</p>
 <p>constrains: column[0] &lt; column[1]</p>
-<h3 id="connected_neuronsneuron_to_range_post">connected_neurons/neuron_to_range_post</h3>
+<h3 id="connected_neurons_postneuron_id_to_range">connected_neurons_post/neuron_id_to_range</h3>
 <p>description: same than <em>connected_neurons/neuron_to_range_pre</em> but for post-synaptic neurons</p>
-<h3 id="connected_neuronsrange_to_synapse_post">connected_neurons/range_to_synapse_post</h3>
+<h3 id="connected_neurons_postrange_to_synapse_id">connected_neurons_post/range_to_synapse_id</h3>
 <p>description: same than <em>connected_neurons/range_to_synapse_pre</em> but for post-synaptic neurons</p>
 <h2 id="attributes">Attributes</h2>
 <h3 id="version">Version</h3>
@@ -271,12 +272,6 @@ document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'" clas'+'s="em' + 'ail">'+e+'<\
 * datatype : &quot;INT8&quot;
 * dataset size : 2x1
 * value &quot;[ 1, 0 ]&quot;</code></pre>
-<p>SYN2 files MAY define a default synapse population to use for compatibility with tool using only a single population. The default population is set through an attribute “default_population” on the synapses group itself.</p>
-<p>“/synapses#default_population”</p>
-<pre><code>* associated elent &quot;/synapses&quot;
-* key &quot;default_population&quot;
-* datatype &quot;STRING&quot;
-* value &quot;{population_name}&quot;</code></pre>
 <h1 id="scale-considerations">SCALE CONSIDERATIONS</h1>
 <p>Each dataset stored in a SYN2 HDF5 file MIGHT be compressed using the DEFLATE compression algorithm.</p>
 <p>Each dataset stored in a SYN2 HDF5 file MIGHT use the HDF5 external reference feature to split the layout into several HDF5 files. If doing so, every separated file part of the layout SHOULD have the following extension .syn2.part</p>
