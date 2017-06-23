@@ -415,7 +415,7 @@ datatype: DOUBLE
 
 ### nrn_line
 description: Synapse position in corresponding postsynaptic GID dataset in nrn.h5.
-For retro-compatibility with NRN, would be dropped eventually.
+Used for retro-compatibility with NRN; would be dropped eventually.
 
 This property is optional
 
