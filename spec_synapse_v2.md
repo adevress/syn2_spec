@@ -422,7 +422,7 @@ This property is optional
 
 dataset size: 1xS
 
-datatype: INT32
+datatype: INT64
 
 
 ## Indexes
