@@ -2,14 +2,14 @@
 
 # Abstract
 
-SYN2 is a proposed file format specification adapted to store the neuronal connectivity (synapses) of large neuronal network. 
+SYN2 is a proposed file format specification adapted to store the neuronal connectivity (synapses) of large neuronal network.
 It is design to be extensible and adapted to both point to point neuronal connectivity and detailed neuronal connectivity.
 
 
-**Authors:**  
-Adrien Devresse <adrien.devresse@epfl.ch>  
-Till Schumann <till.schumann@epfl.ch>  
-James Gonzalo King <jamesgonzalo.king@epfl.ch>  
+**Authors:**
+Adrien Devresse <adrien.devresse@epfl.ch>
+Till Schumann <till.schumann@epfl.ch>
+James Gonzalo King <jamesgonzalo.king@epfl.ch>
 
 
 **Date:** January 27, 2017
@@ -51,7 +51,7 @@ It aims to unify and correct the known problems of the following file formats:
  * MUST be adapted to store TeraByte (up to Petabyte) scale neuronal synapse connectivity :
      * MUST be able to be loaded partially (out of core)
      * MUST be resistant to corruption
- * MUST support parallel I/O ( read and write ) operations from multiple nodes  
+ * MUST support parallel I/O ( read and write ) operations from multiple nodes
  * MAY support compression if possible
 
 ## Performance requirements
@@ -77,7 +77,7 @@ List of the main design requirements for this file format :
 
 ## Usability requirements
 * SHOULD be based on existing open standard
-* SHOULD be a self-described layout 
+* SHOULD be a self-described layout
 
 
 
@@ -98,17 +98,17 @@ The SYN2 containers MUST follow the following hierachy layout.
 
 > /
 >
-> /synapses 
+> /synapses
 >
-> /synapses/{population_name}   
+> /synapses/{population_name}
 >
-> /synapses/{population_name}/properties 
+> /synapses/{population_name}/properties
 >
-> /synapses/{population_name}/properties/{property_name}  
+> /synapses/{population_name}/properties/{property_name}
 >
-> /synapses/{population_name}/indexes 
+> /synapses/{population_name}/indexes
 >
-> /synapses/{population_name}/indexes/{index_group_name} 
+> /synapses/{population_name}/indexes/{index_group_name}
 >
 > /synapses/{population_name}/indexes/{index_group_name}/{index_data}
 
@@ -116,12 +116,12 @@ The SYN2 containers MUST follow the following hierachy layout.
 
 
 
-### population_name  
+### population_name
 
 namespace for a population of synapses. A population of synapses MUST BE independant
 of each other and MAY have their own properties. This allows the
 representation of several heterogenous collections of synapses in a single file.
-( e.g point to point, detailed, ... ). 
+( e.g point to point, detailed, ... ).
 
 In case of a single unamed population, the name "default" SHOULD be used.
 
@@ -294,8 +294,8 @@ datatype: INT64
 unit: number
 
 ### syn_type_id
-description: Synapse type id as used in the recipe. Used in detailed model. 
-The id can be any arbitrary INT64 value refering to an external model id 
+description: Synapse type id as used in the recipe. Used in detailed model.
+The id can be any arbitrary INT64 value refering to an external model id
 
 This property is optional
 
@@ -413,9 +413,21 @@ dataset size: 3xS
 datatype: DOUBLE
 
 
+### nrn_line
+description: Synapse position in corresponding postsynaptic GID dataset in nrn.h5.
+Used for retro-compatibility with NRN; would be dropped eventually.
+
+This property is optional
+
+
+dataset size: 1xS
+
+datatype: INT64
+
+
 ## Indexes
 
-### connected_neurons_{pre,post} indexes 
+### connected_neurons_{pre,post} indexes
 description: Index groups used for Neuron to Synapse mapping
 in O(1)-O(log(S)) maximum time complexity.
 
@@ -433,14 +445,14 @@ of the synapse properties and allow to optimise the storage of properties for sp
 
 
 ### connected_neurons_pre/neuron_id_to_range
-description: Index for pre-synaptic neuron to synapse association. 
-This index provide the range of *connected_neurons_pre/range_to_synapse_id* rows 
+description: Index for pre-synaptic neuron to synapse association.
+This index provide the range of *connected_neurons_pre/range_to_synapse_id* rows
 associated with each neuron
 
     * row: neuron_id
     * column[0]: beginning of the range in index connected_neurons_pre/range_to_synapse_id
     * column[1]: non-inclusive end of the range in the index connected_neurons_pre/range_to_synapse_id
-    
+
 
 SHOULD be provided.
 
@@ -453,12 +465,12 @@ constrains: column[0] < column[1]. A negative value in column 0 indicates that n
 
 
 ### connected_neurons_pre/range_to_synapse_id
-description: Index for pre-synaptic neuron to synapse association. 
+description: Index for pre-synaptic neuron to synapse association.
 This index provides a range of *properties* per index row
 
     * column[0]: beginning of the range of synapses *properties*
     * column[1]: non-inclusive end of synapses *properties*
-    
+
 
 SHOULD be provided.
 
@@ -494,8 +506,8 @@ SYN2 files MUST define two attributes for file format versionning
     * dataset size : 2x1
     * value "[ 1, 0 ]"
 
-   
-    
+
+
 
 # SCALE CONSIDERATIONS
 
