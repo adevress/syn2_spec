@@ -369,6 +369,40 @@ datatype: FLOAT
 unit: micro-meters
 
 
+### morpho_branch_order_pre
+description: Branch order of the section associated with the pre-synaptic neuron.
+Used in detailed model.
+
+This property is optional
+
+dataset size: 1xS
+
+datatype: INT64
+
+
+### morpho_branch_order_post
+description: Branch order of the section associated with the post-synaptic neuron (-1 for on-soma synapses).
+Used in detailed model.
+
+This property is optional
+
+dataset size: 1xS
+
+datatype: INT64
+
+
+### morpho_branch_type_post
+description: Branch type of the section associated with the post-synaptic neuron.
+0 stands for soma, 1 for axon, 2 for basal dendrite and 3 for apical dendrite.
+Used in detailed model.
+
+This property is optional
+
+dataset size: 1xS
+
+datatype: INT64
+
+
 ### position_center_pre
 description: Pre-synaptic touch position in the center of the segment. xyz positions
 
