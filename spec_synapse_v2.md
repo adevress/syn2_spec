@@ -506,7 +506,16 @@ SYN2 files MUST define two attributes for file format versionning
     * dataset size : 2x1
     * value "[ 1, 0 ]"
 
+### Neuron ID range (Min & Max gid)
 
+SYN2 files MUST specify the lowest and highest GIDs in the dataset. They serve the main purposes of identifying out-of-range Gids out of  gids without connectivity, even in the absence of any index.
+
+"/synapses/{population_name}#gid_range
+
+    * associated elent : "/synapses/{population_name}"
+    * key : "gid_range"
+    * datatype : "INT64"
+    * dataset size : 2x1
 
 
 # SCALE CONSIDERATIONS
